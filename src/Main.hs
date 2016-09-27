@@ -1,3 +1,6 @@
 module Main (main) where
 
-main = print("Hello World!")
+import GameRunner
+
+main :: IO()
+main = runGame
