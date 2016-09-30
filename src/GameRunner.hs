@@ -3,25 +3,33 @@ module GameRunner
     runGame
   ) where
 
+import Control.Monad.Loops (whileM_)
+
 import qualified GameLogic as GameLogic
 import Board as Board
 import qualified AI as AI
 import qualified Player as Player
 import qualified Display as Display
-
-import Settings as Settings
+import qualified Settings as Settings
 import Markers
 
 runGame :: IO()
 runGame = do
   Display.welcomeMessage
+  whileM_ (do
+             Settings.playRound
+          ) $ do
+    playGame
+  Display.endMessage
+
+playGame :: IO()
+playGame = do
   playerMarker <- Settings.getPlayerMarker
-  aiPlayerMarker <- Settings.getAIMarker playerMarker
+  aiPlayerMarker <- Settings.getAIMarker
   let board = Board.makeBoard
   let markers = Markers { ai = aiPlayerMarker :: String, player = playerMarker :: String }
   Display.displayBoard board
   playerMove board markers
-  Display.endMessage
 
 playerMove :: Board -> Markers String String  -> IO ()
 playerMove gameBoard markers = do

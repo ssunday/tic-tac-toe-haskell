@@ -18,7 +18,7 @@ welcomeMessage =
 
 endMessage :: IO()
 endMessage =
-  let message = "\nThank you for playing!"
+  let message = "\nGood-bye!"
   in putStrLn $ Colors.colorString "YELLOW" message
 
 playerHasWonMessage :: [Char] -> IO()

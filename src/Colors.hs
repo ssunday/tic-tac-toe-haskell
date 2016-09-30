@@ -14,12 +14,12 @@ colors = Map.fromList [ ("WHITE", "\x1b[0m")
                       , ("PURPLE", "\x1b[35m")
                       , ("CYAN", "\x1b[36m")
                       , ("LIGHT GREY", "\x1b[37m")
+                      , ("LIGHT RED", "\x1b[91m")
                       , ("LIGHT GREEN", "\x1b[92m")
                       , ("LIGHT YELLOW", "\x1b[93m")
                       , ("LIGHT BLUE", "\x1b[94m")
                       , ("LIGHT PURPLE", "\x1b[95m")
-                      , ("LIGHT CYAN", "\x1b[96m")
-                      , ("LIGHT RED", "\x1b[91m") ]
+                      , ("LIGHT CYAN", "\x1b[96m") ]
 
 getColor :: String -> String
 getColor color =

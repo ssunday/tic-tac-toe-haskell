@@ -1,10 +1,11 @@
 # Tic Tac Toe
 
-
 Haskell Tic Tac Toe Game. Glorious. So pure it is impure.
 
 * Player vs AI
 * You can choose your marker
+* Play game over and over again
+* Colors
 
 ## Usage
 

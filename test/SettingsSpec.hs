@@ -16,7 +16,7 @@ spec = do
           valid = SUT.isMarkerValid marker
       valid `shouldBe` True
 
-    it "is false when marker is too long" $ do
-      let marker = "rewrwqerwerw"
+    it "is false when marker is greater than 1" $ do
+      let marker = "rw"
           valid = SUT.isMarkerValid marker
       valid `shouldBe` False

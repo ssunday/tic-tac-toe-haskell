@@ -2,28 +2,34 @@ module Settings
   (
     getPlayerMarker
   , getAIMarker
+  , playRound
   , isMarkerValid
   ) where
 
-import qualified Input as I
+import qualified Input as Input
+import qualified Colors as Colors
+
+playRound :: IO Bool
+playRound = do
+  play <- Input.prompt $ "\nDo you want to play a round of Tic Tac Toe? (y/n)"
+  return $ play /= "n"
 
 getPlayerMarker :: IO String
-getPlayerMarker = go
-  where go = do
-          playerMarkerIO <- I.prompt "What do you want your Marker to be? (Length of one)"
-          let playerMarker = playerMarkerIO :: String
-          if (isMarkerValid playerMarker)
-            then return $ "\x1b[96m" ++ playerMarker ++ "\x1b[0m"
-            else go
+getPlayerMarker =
+  getMarker "\nWhat do you want your marker to be? (Length of one)" "LIGHT CYAN"
 
-getAIMarker :: String -> IO String
-getAIMarker otherMarker = go otherMarker
-  where go other = do
-          aiMarkerIO <- I.prompt "What do you want the AI Marker to be? (Do not make it same as your marker and be length of one)"
-          let aiMarker = aiMarkerIO :: String
-          if (isMarkerValid aiMarker) && (not (aiMarker == other))
-            then return $ "\x1b[91m" ++ aiMarker ++ "\x1b[0m"
-            else go other
+getAIMarker :: IO String
+getAIMarker =
+  getMarker "\nWhat do you want the computer marker to be? (Length of one)" "LIGHT RED"
+
+getMarker :: String -> String -> IO String
+getMarker prompt markerColor = go
+  where go = do
+          markerIO <- Input.prompt prompt
+          let marker = markerIO :: String
+          if (isMarkerValid marker)
+            then return $ Colors.colorString markerColor marker
+            else go
 
 isMarkerValid :: String -> Bool
 isMarkerValid marker =
