@@ -18,9 +18,7 @@ allBoardSpots = map show [1 :: Int .. 9]
 
 makeBoard :: Board
 makeBoard =
-  let pair number = (number, "")
-      boardMap = map pair allBoardSpots
-  in Map.fromList boardMap
+  Map.fromList $ zip allBoardSpots (repeat "")
 
 markBoard :: Board -> String -> String -> Board
 markBoard gameBoard spot marker =

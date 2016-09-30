@@ -1,29 +1,30 @@
 module GameLogic
-  (isOver
-   , isTied
-   , getWinningPlayer
+  (
+    isOver
+  , isTied
+  , getWinningPlayer
    ) where
 
 import Board as Board
 
 isOver :: Board -> Bool
 isOver gameBoard =
-  isTied(gameBoard) || isWon(gameBoard)
+  isTied gameBoard  || isWon gameBoard
 
 isTied :: Board -> Bool
 isTied gameBoard =
   let boardVals = Board.getBoardValues gameBoard Board.allBoardSpots
-  in allNotNull(boardVals) && (not.isWon) gameBoard
+  in allNotNull boardVals && (not.isWon) gameBoard
 
 getWinningPlayer :: Board -> String
 getWinningPlayer gameBoard
   | (null winningRows) = ""
-  | otherwise = (head (head winningRows))
+  | otherwise = head (head winningRows)
   where winningRows = getWinningRows(gameBoard)
 
 isWon :: Board -> Bool
 isWon gameBoard =
-  not.null $ getWinningRows gameBoard
+  not . null $ getWinningRows gameBoard
 
 getWinningRows :: Board -> [[String]]
 getWinningRows gameBoard =
@@ -52,6 +53,4 @@ allEqual xs =
 allNotNull :: Eq a => [[a]] -> Bool
 allNotNull [] = True
 allNotNull xs =
-  let notNull val = not $ null val
-      areValsNotNull = map notNull xs
-  in and areValsNotNull
+  and $ map (not . null) xs

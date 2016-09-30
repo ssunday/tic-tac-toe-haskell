@@ -5,22 +5,37 @@ module GameRunner
 
 import Control.Monad.Loops (whileM_)
 
-import qualified GameLogic as GameLogic
 import Board as Board
-import qualified AI as AI
-import qualified Player as Player
-import qualified Display as Display
-import qualified Settings as Settings
 import Markers
+import qualified AI as AI
+import qualified Display as Display
+import qualified GameLogic as GameLogic
+import qualified Player as Player
+import qualified Score as Score
+import qualified Settings as Settings
 
 runGame :: IO()
 runGame = do
   Display.welcomeMessage
   whileM_ (do
-             Settings.playRound
+            showScoresIfPossible
+            Settings.playRound
           ) $ do
     playGame
   Display.endMessage
+
+showScoresIfPossible :: IO()
+showScoresIfPossible = do
+  exists <- Score.doesScoreFileExist Score.scoreFile
+  if (exists :: Bool)
+    then displayAvailableTallys
+    else Display.noScoresMessage
+
+displayAvailableTallys :: IO()
+displayAvailableTallys = do
+  winners <- Score.getWinners Score.scoreFile
+  let tallys = Score.getTallys winners
+  Display.displayTallys tallys
 
 playGame :: IO()
 playGame = do
@@ -38,7 +53,7 @@ playerMove gameBoard markers = do
   let newBoard = Board.markBoard gameBoard spot $ player markers
   Display.displayBoard newBoard
   if GameLogic.isOver newBoard
-  then reportEndGameStatus newBoard markers
+  then endGame newBoard
   else aiMove newBoard markers
 
 aiMove :: Board -> Markers String String -> IO()
@@ -46,7 +61,7 @@ aiMove gameBoard markers = do
   let newBoard = makeAIMove gameBoard markers
   Display.displayBoard newBoard
   if GameLogic.isOver newBoard
-  then reportEndGameStatus newBoard markers
+  then endGame newBoard
   else playerMove newBoard markers
 
 makeAIMove :: Board -> Markers String String -> Board
@@ -54,12 +69,14 @@ makeAIMove gameBoard markers =
   let spot = AI.getMove gameBoard markers
   in Board.markBoard gameBoard spot (ai markers)
 
-reportEndGameStatus :: Board -> Markers String String -> IO()
-reportEndGameStatus gameBoard markers
-  | (winningPlayer == aiMarker) = Display.playerHasWonMessage aiMarker
-  | (winningPlayer == playerMarker) = Display.playerHasWonMessage playerMarker
-  | otherwise = Display.gameTiedMessage
+endGame :: Board -> IO()
+endGame gameBoard = do
+  _ <- Score.recordWinner winningPlayer Score.scoreFile
+  reportEndGameStatus winningPlayer
   where
-    aiMarker = ai markers
-    playerMarker = player markers
     winningPlayer = GameLogic.getWinningPlayer gameBoard
+
+reportEndGameStatus :: String -> IO()
+reportEndGameStatus winningPlayer
+  | null winningPlayer = Display.gameTiedMessage
+  | otherwise = Display.playerHasWonMessage winningPlayer

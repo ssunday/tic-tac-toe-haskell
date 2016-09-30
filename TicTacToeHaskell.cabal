@@ -13,6 +13,8 @@ executable TicTacToeHaskell
   ghc-options:       -Wall -Werror
   build-depends:     base >=4.8 && <4.9,
                      parallel,
+                     split,
+                     directory,
                      monad-loops,
                      containers
 
@@ -30,6 +32,8 @@ test-suite sp
    type:             exitcode-stdio-1.0
    build-depends:    base >=4.8 && <4.9,
                      parallel,
+                     split,
+                     directory,
                      containers,
                      hspec == 2.*,
                      QuickCheck

@@ -1,6 +1,9 @@
 module Display
-  (welcomeMessage
+  (
+    welcomeMessage
   , endMessage
+  , noScoresMessage
+  , displayTallys
   , playerHasWonMessage
   , gameTiedMessage
   , displayBoard
@@ -13,28 +16,43 @@ import Board as Board
 
 welcomeMessage :: IO()
 welcomeMessage =
-  let message = "\nWelcome to the Tic Tac Toe Game!\n"
-  in putStrLn $ Colors.colorString "CYAN" message
+  printColoredMessage "CYAN" "\nWelcome to the Tic Tac Toe Game!\n"
 
 endMessage :: IO()
 endMessage =
-  let message = "\nGood-bye!"
-  in putStrLn $ Colors.colorString "YELLOW" message
+  printColoredMessage "YELLOW" "\nGood-bye!"
 
-playerHasWonMessage :: [Char] -> IO()
+playerHasWonMessage :: [Char] -> IO ()
 playerHasWonMessage winningPlayerMarker =
-  putStrLn $ "\nPlayer " ++ winningPlayerMarker ++ " has won!"
+  printColoredMessage "LIGHT YELLOW" $ "\nPlayer " ++ winningPlayerMarker ++ " has won!"
 
 gameTiedMessage :: IO()
 gameTiedMessage = do
-  putStrLn $ "\nTie!"
+  printColoredMessage "LIGHT YELLOW" "\nTie!"
+
+printColoredMessage :: String -> String -> IO ()
+printColoredMessage color message =
+  putStrLn $ Colors.colorString color message
+
+noScoresMessage :: IO ()
+noScoresMessage =
+  putStrLn $ "No scores to show! Play some games!"
+
+displayTallys :: [(String, Int)] -> IO ()
+displayTallys tallys =
+  putStrLn $ "\nAmount of Wins Per Marker and total ties:\n" ++ (showTallys tallys)
+
+showTallys :: [(String, Int)] -> String
+showTallys tallys =
+  concatMap (\(a,b) -> formatTally a b) tallys
+
+formatTally :: String -> Int -> String
+formatTally marker tally =
+  marker ++ " : " ++ (show tally) ++ "\n"
 
 displayBoard :: Board -> IO ()
 displayBoard gameBoard =
   putStr $ showBoard gameBoard
-
-border :: String
-border = "\n  -------------------------------------\n"
 
 showBoard :: Board -> String
 showBoard gameBoard =
@@ -58,3 +76,6 @@ formCellDisplay spot value =
 valueDisplay :: String -> String
 valueDisplay [] = " "
 valueDisplay value = value
+
+border :: String
+border = "\n  -------------------------------------\n"
