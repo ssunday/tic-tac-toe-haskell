@@ -20,15 +20,19 @@ welcomeMessage =
 
 endMessage :: IO()
 endMessage =
-  printColoredMessage "YELLOW" "\nGood-bye!"
+  printColoredMessage "YELLOW" "\nThanks for playing and good-bye!"
 
 playerHasWonMessage :: [Char] -> IO ()
 playerHasWonMessage winningPlayerMarker =
-  printColoredMessage "LIGHT YELLOW" $ "\nPlayer " ++ winningPlayerMarker ++ " has won!"
+  putStrLn $ player ++ winningPlayerMarker ++ won
+  where
+    color = "LIGHT BLUE"
+    player = Colors.colorString color "\nPlayer "
+    won = Colors.colorString color " has won!"
 
 gameTiedMessage :: IO()
 gameTiedMessage = do
-  printColoredMessage "LIGHT YELLOW" "\nTie!"
+  printColoredMessage "LIGHT BLUE" "\nTie!"
 
 printColoredMessage :: String -> String -> IO ()
 printColoredMessage color message =
@@ -40,7 +44,7 @@ noScoresMessage =
 
 displayTallys :: [(String, Int)] -> IO ()
 displayTallys tallys =
-  putStrLn $ "\nAmount of Wins Per Marker and total ties:\n" ++ (showTallys tallys)
+  printColoredMessage "GREEN" $ "\nAmount of Wins Per Marker and Total Ties:\n" ++ showTallys tallys
 
 showTallys :: [(String, Int)] -> String
 showTallys tallys =

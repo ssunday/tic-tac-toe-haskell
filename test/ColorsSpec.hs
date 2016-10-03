@@ -7,11 +7,7 @@ import qualified Data.List as List
 
 import qualified Colors as SUT
 
-main :: IO ()
-main = hspec spec
-
 spec :: Spec
-
 spec = do
   describe "colorString" $ do
     it "returns string starting with correct color" $ property $ \x ->

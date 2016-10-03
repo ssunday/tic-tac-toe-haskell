@@ -1,23 +1,19 @@
 module MarkersSpec where
 
 import Test.Hspec
-import Test.QuickCheck
+import Test.Hspec.QuickCheck (prop)
 
 import Markers
 
-main :: IO ()
-main = hspec spec
-
 spec :: Spec
-
 spec = do
   describe "Markers" $ do
-    it "assigns player marker to player" $ property $ \x y->
-      let markers = Markers {ai = y, player = x}
+    prop "assigns player marker to player" $ \markerOne markerTwo ->
+      let markers = Markers {ai = markerOne, player = markerTwo}
           playerMarker = (player markers)
-      in playerMarker == x
+      in playerMarker == markerTwo
 
-    it "assigns first marker to ai" $ property $ \x y->
-      let markers = Markers {ai = y, player = x}
+    prop "assigns first marker to ai" $ \markerOne markerTwo ->
+      let markers = Markers {ai = markerOne, player = markerTwo}
           aiMarker = (ai markers)
-      in aiMarker == y
+      in aiMarker == markerOne

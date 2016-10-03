@@ -3,7 +3,7 @@ module GameLogic
     isOver
   , isTied
   , getWinningPlayer
-   ) where
+  ) where
 
 import Board as Board
 
@@ -14,12 +14,12 @@ isOver gameBoard =
 isTied :: Board -> Bool
 isTied gameBoard =
   let boardVals = Board.getBoardValues gameBoard Board.allBoardSpots
-  in allNotNull boardVals && (not.isWon) gameBoard
+  in allNotNull boardVals && (not . isWon $ gameBoard)
 
 getWinningPlayer :: Board -> String
 getWinningPlayer gameBoard
   | (null winningRows) = ""
-  | otherwise = head (head winningRows)
+  | otherwise = head . head $ winningRows
   where winningRows = getWinningRows(gameBoard)
 
 isWon :: Board -> Bool
@@ -33,7 +33,7 @@ getWinningRows gameBoard =
 
 rowHasBeenWon :: [String] -> Bool
 rowHasBeenWon rowVals =
-  allEqual(rowVals) && allNotNull(rowVals)
+  allEqual rowVals && allNotNull rowVals
 
 winningCombinations :: [[String]]
 winningCombinations = [ ["1", "2", "3"]

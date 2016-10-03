@@ -2,17 +2,21 @@ module Settings
   (
     getPlayerMarker
   , getAIMarker
-  , playRound
-  , isMarkerValid
+  , askToPlayRound
+  , askIfPlayerGoingFirst
   ) where
 
 import qualified Input as Input
+import qualified InputValidation as Validation
 import qualified Colors as Colors
 
-playRound :: IO Bool
-playRound = do
-  play <- Input.prompt $ "\nDo you want to play a round of Tic Tac Toe? (y/n)"
-  return $ play /= "n"
+askToPlayRound :: IO Bool
+askToPlayRound =
+  yOrNLoop $ "\nDo you want to play a round of Tic Tac Toe? (y/n)"
+
+askIfPlayerGoingFirst :: IO Bool
+askIfPlayerGoingFirst =
+  yOrNLoop $ "\nDo you want to go first? (y/n)"
 
 getPlayerMarker :: IO String
 getPlayerMarker =
@@ -27,10 +31,15 @@ getMarker prompt markerColor = go
   where go = do
           markerIO <- Input.prompt prompt
           let marker = markerIO :: String
-          if (isMarkerValid marker)
+          if Validation.isMarkerValid marker
             then return $ Colors.colorString markerColor marker
             else go
 
-isMarkerValid :: String -> Bool
-isMarkerValid marker =
-  length marker == 1
+yOrNLoop :: String -> IO Bool
+yOrNLoop promptString = go
+  where go = do
+          responseIO <- Input.prompt promptString
+          let response = responseIO :: String
+          if Validation.isValidYOrNInput response
+            then return $ Validation.isYes response
+            else go

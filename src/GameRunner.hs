@@ -19,32 +19,35 @@ runGame = do
   Display.welcomeMessage
   whileM_ (do
             showScoresIfPossible
-            Settings.playRound
+            Settings.askToPlayRound
           ) $ do
     playGame
   Display.endMessage
 
-showScoresIfPossible :: IO()
+showScoresIfPossible :: IO ()
 showScoresIfPossible = do
   exists <- Score.doesScoreFileExist Score.scoreFile
   if (exists :: Bool)
     then displayAvailableTallys
     else Display.noScoresMessage
 
-displayAvailableTallys :: IO()
+displayAvailableTallys :: IO ()
 displayAvailableTallys = do
   winners <- Score.getWinners Score.scoreFile
   let tallys = Score.getTallys winners
   Display.displayTallys tallys
 
-playGame :: IO()
+playGame :: IO ()
 playGame = do
   playerMarker <- Settings.getPlayerMarker
   aiPlayerMarker <- Settings.getAIMarker
-  let board = Board.makeBoard
+  playerGoingFirst <- Settings.askIfPlayerGoingFirst
   let markers = Markers { ai = aiPlayerMarker :: String, player = playerMarker :: String }
+  let board = Board.makeBoard
   Display.displayBoard board
-  playerMove board markers
+  if playerGoingFirst
+    then playerMove board markers
+    else aiMove board markers
 
 playerMove :: Board -> Markers String String  -> IO ()
 playerMove gameBoard markers = do
@@ -56,7 +59,7 @@ playerMove gameBoard markers = do
   then endGame newBoard
   else aiMove newBoard markers
 
-aiMove :: Board -> Markers String String -> IO()
+aiMove :: Board -> Markers String String -> IO ()
 aiMove gameBoard markers = do
   let newBoard = makeAIMove gameBoard markers
   Display.displayBoard newBoard
@@ -76,7 +79,7 @@ endGame gameBoard = do
   where
     winningPlayer = GameLogic.getWinningPlayer gameBoard
 
-reportEndGameStatus :: String -> IO()
+reportEndGameStatus :: String -> IO ()
 reportEndGameStatus winningPlayer
   | null winningPlayer = Display.gameTiedMessage
   | otherwise = Display.playerHasWonMessage winningPlayer

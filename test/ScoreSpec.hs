@@ -6,11 +6,7 @@ import qualified System.IO as IO
 
 import qualified Score as SUT
 
-main :: IO ()
-main = hspec spec
-
 spec :: Spec
-
 spec = do
   describe "recordWinner" $ do
     it "writes the winning player marker to a file with a comma after it" $ do
@@ -19,12 +15,14 @@ spec = do
       contents <- (IO.readFile SUT.scoreFileTest)
       _ <- SUT.clearFile SUT.scoreFileTest
       (contents :: String) `shouldBe` (marker ++ ",")
+
     it "writes the blank marker as 'TIE'" $ do
       let marker = ""
       _ <- SUT.recordWinner marker SUT.scoreFileTest
       contents <- (IO.readFile SUT.scoreFileTest)
       _ <- SUT.clearFile SUT.scoreFileTest
       (contents :: String) `shouldBe` "TIE,"
+
     it "can write multiple winning player markers to a file and persists all of them, comma separated" $ do
       let marker = "X"
       _ <- SUT.recordWinner marker SUT.scoreFileTest
