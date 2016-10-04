@@ -9,7 +9,7 @@ import Board as Board
 
 isOver :: Board -> Bool
 isOver gameBoard =
-  isTied gameBoard  || isWon gameBoard
+  isTied gameBoard || isWon gameBoard
 
 isTied :: Board -> Bool
 isTied gameBoard =
@@ -18,13 +18,13 @@ isTied gameBoard =
 
 getWinningPlayer :: Board -> String
 getWinningPlayer gameBoard
-  | (null winningRows) = ""
+  | null winningRows = ""
   | otherwise = head . head $ winningRows
-  where winningRows = getWinningRows(gameBoard)
+  where winningRows = getWinningRows gameBoard
 
 isWon :: Board -> Bool
 isWon gameBoard =
-  not . null $ getWinningRows gameBoard
+  not . null . getWinningRows $ gameBoard
 
 getWinningRows :: Board -> [[String]]
 getWinningRows gameBoard =

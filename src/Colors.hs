@@ -3,27 +3,26 @@ module Colors
     colorString
   ) where
 
-import qualified Data.Map as Map
 import qualified Data.Maybe as Maybe
 
-colors :: Map.Map String String
-colors = Map.fromList [ ("WHITE", "\x1b[0m")
-                      , ("GREEN", "\x1b[32m")
-                      , ("YELLOW", "\x1b[33m")
-                      , ("BLUE", "\x1b[34m")
-                      , ("PURPLE", "\x1b[35m")
-                      , ("CYAN", "\x1b[36m")
-                      , ("LIGHT GREY", "\x1b[37m")
-                      , ("LIGHT RED", "\x1b[91m")
-                      , ("LIGHT GREEN", "\x1b[92m")
-                      , ("LIGHT YELLOW", "\x1b[93m")
-                      , ("LIGHT BLUE", "\x1b[94m")
-                      , ("LIGHT PURPLE", "\x1b[95m")
-                      , ("LIGHT CYAN", "\x1b[96m") ]
+colors :: [(String, String)]
+colors = [ ("WHITE", "\x1b[0m")
+         , ("GREEN", "\x1b[32m")
+         , ("YELLOW", "\x1b[33m")
+         , ("BLUE", "\x1b[34m")
+         , ("PURPLE", "\x1b[35m")
+         , ("CYAN", "\x1b[36m")
+         , ("LIGHT GREY", "\x1b[37m")
+         , ("LIGHT RED", "\x1b[91m")
+         , ("LIGHT GREEN", "\x1b[92m")
+         , ("LIGHT YELLOW", "\x1b[93m")
+         , ("LIGHT BLUE", "\x1b[94m")
+         , ("LIGHT PURPLE", "\x1b[95m")
+         , ("LIGHT CYAN", "\x1b[96m") ]
 
 getColor :: String -> String
 getColor color =
-  Maybe.fromMaybe "\x1b[0m" $ Map.lookup color colors
+  Maybe.fromMaybe "\x1b[0m" $ lookup color colors
 
 colorString :: String -> String -> String
 colorString color s =

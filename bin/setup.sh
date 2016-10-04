@@ -4,7 +4,7 @@ createdb ttt_hk
 
 createdb ttt_hk_test
 
-echo "Initializing schema..."
+echo "Creating schema..."
 
 psql -U postgres -d ttt_hk -c 'CREATE TABLE IF NOT EXISTS scores(key SERIAL PRIMARY KEY, winning_player text);'
 

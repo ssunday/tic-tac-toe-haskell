@@ -3,16 +3,21 @@ module InputValidation
     isYes
   , isValidYOrNInput
   , isMarkerValid
+  , isMenuOptionValid
   ) where
 
 isYes :: String -> Bool
 isYes input =
-  input == "y"
+  elem input ["y", "yes"]
 
 isValidYOrNInput :: String -> Bool
 isValidYOrNInput input =
-  input == "y" || input == "n"
+  elem input ["y", "n", "yes" , "no"]
 
 isMarkerValid :: String -> Bool
 isMarkerValid marker =
   length marker == 1
+
+isMenuOptionValid :: [(Int, String)] -> Int -> Bool
+isMenuOptionValid menu option =
+  option > 0 && option < (length menu) + 1

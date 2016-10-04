@@ -32,7 +32,6 @@ spec = do
             move = SUT.getMove gameBoard markers
         move `shouldBe` "5"
 
-
       it "returns center if bottom left corner occupied by opponent" $ do
         let gameBoard = Helper.constructBoard [("7", pl)]
             move = SUT.getMove gameBoard markers

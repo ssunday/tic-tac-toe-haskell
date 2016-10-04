@@ -1,9 +1,9 @@
 module Settings
   (
-    getPlayerMarker
-  , getAIMarker
-  , askToPlayRound
+    askToPlayRound
   , askIfPlayerGoingFirst
+  , getPlayerMarker
+  , getAIMarker
   ) where
 
 import qualified Input as Input
@@ -12,11 +12,11 @@ import qualified Colors as Colors
 
 askToPlayRound :: IO Bool
 askToPlayRound =
-  yOrNLoop $ "\nDo you want to play another round of Tic Tac Toe? (y/n)"
+  yOrNLoop $ "\nDo you want to play another round of Tic Tac Toe? (yes/no)"
 
 askIfPlayerGoingFirst :: IO Bool
 askIfPlayerGoingFirst =
-  yOrNLoop $ "\nDo you want to go first? (y/n)"
+  yOrNLoop $ "\nDo you want to go first? (yes/no)"
 
 getPlayerMarker :: IO String
 getPlayerMarker =

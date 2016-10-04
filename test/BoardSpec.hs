@@ -16,7 +16,7 @@ spec = do
   describe "markBoard" $ do
     prop "marks board with given spot and marker" $ \marker ->
       let markedBoard = SUT.markBoard (Helper.constructBoard []) "2" marker
-          markedVal = Helper.extractValueFromMap markedBoard "2"
+          markedVal = Helper.valueFromKey markedBoard "2"
       in markedVal == marker
 
   describe "getAvailableSpots" $ do

@@ -3,6 +3,7 @@ module SpecHelperSpec where
 import Test.Hspec
 
 import qualified Data.Map as Map
+import qualified System.Directory as Directory
 
 import SpecHelper as SUT
 
@@ -24,8 +25,15 @@ spec = do
                                           , ("4", ""), ("5", ""), ("6", "")
                                           , ("7", "O"), ("8", ""), ("9", "")]
 
-  describe "extractValueFromMap" $ do
+  describe "valueFromKey" $ do
     it "returns the value of the key of the given map" $ do
       let mapToExtract = Map.fromList [("1", "O"), ("2", "X"), ("3", "Z")]
-          value = SUT.extractValueFromMap mapToExtract "3"
+          value = SUT.valueFromKey mapToExtract "3"
       value `shouldBe` "Z"
+
+  describe "deleteFile" $ do
+    it "file still does not exist when deleting file that does not exist" $ do
+      let fakeFile = "blah.txt"
+      SUT.deleteFile fakeFile
+      doesExist <- Directory.doesFileExist fakeFile
+      (doesExist :: Bool) `shouldBe` False

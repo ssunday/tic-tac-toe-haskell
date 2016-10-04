@@ -1,12 +1,14 @@
 module SpecHelper
   (
     constructBoard
-  , extractValueFromMap
+  , valueFromKey
+  , deleteFile
   )
 where
 
+import Control.Monad
+import qualified System.Directory as Directory
 import qualified Data.Map as Map
-import Data.Maybe (fromMaybe)
 
 baseMap :: Map.Map String String
 baseMap = Map.fromList [ ("1", ""), ("2", ""), ("3", "")
@@ -16,8 +18,14 @@ baseMap = Map.fromList [ ("1", ""), ("2", ""), ("3", "")
 constructBoard :: [(String, String)] -> Map.Map String String
 constructBoard [] = baseMap
 constructBoard spotOverrides =
-  Map.union (Map.fromList spotOverrides) baseMap
+  Map.union spots baseMap
+  where spots = Map.fromList spotOverrides
 
-extractValueFromMap :: Map.Map String String -> String -> String
-extractValueFromMap mapToExtract key =
-  fromMaybe "" $ Map.lookup key mapToExtract
+valueFromKey :: Map.Map String String -> String -> String
+valueFromKey boardMap key =
+  boardMap Map.! key
+
+deleteFile :: String -> IO ()
+deleteFile file = do
+  doesExist <- Directory.doesFileExist file
+  when (doesExist :: Bool) $ Directory.removeFile file

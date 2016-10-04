@@ -1,5 +1,5 @@
 module Board
-  (Board
+  ( Board
   , makeBoard
   , allBoardSpots
   , markBoard
@@ -9,12 +9,12 @@ module Board
   ) where
 
 import qualified Data.Map as Map
-import qualified Data.Maybe as Maybe(fromMaybe)
 
 type Board = Map.Map String String
 
 allBoardSpots :: [String]
-allBoardSpots = map show [1 :: Int .. 9]
+allBoardSpots =
+  map show [1 :: Int .. 9]
 
 makeBoard :: Board
 makeBoard =
@@ -27,7 +27,7 @@ markBoard gameBoard spot marker =
 
 isSpotOpen :: Board -> String -> Bool
 isSpotOpen gameBoard spot =
-  (null (getSpotValue gameBoard spot)) && (elem spot allBoardSpots)
+  Map.member spot gameBoard && null (getSpotValue gameBoard spot)
 
 getBoardValues :: Board -> [String] -> [String]
 getBoardValues gameBoard boardSpots =
@@ -39,4 +39,4 @@ getAvailableSpots gameBoard =
 
 getSpotValue :: Board -> String -> String
 getSpotValue gameBoard spot =
-  Maybe.fromMaybe "" $ Map.lookup spot gameBoard
+  gameBoard Map.! spot

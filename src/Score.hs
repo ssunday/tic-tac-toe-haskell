@@ -10,23 +10,15 @@ import qualified Data.List as List (nub)
 
 import qualified Config as Config
 import qualified Display as Display
-
 import qualified ScorePG as PG
 import qualified ScoreTXT as TXT
-
-isPG :: IO Bool
-isPG = do
-  args <- Config.getArgs
-  return $ elem "pg" (args :: [String])
 
 displayScores :: IO ()
 displayScores = do
   isPostgres <- isPG
   if isPostgres :: Bool
-    then
-    displayPGTallys
-    else
-    displayTXTTallys
+    then displayPGTallys
+    else displayTXTTallys
 
 recordWinner :: String -> IO()
 recordWinner winner = do
@@ -35,6 +27,11 @@ recordWinner winner = do
   if isPostgres :: Bool
     then PG.insertWinner marker PG.dbConnection
     else TXT.recordWinner marker TXT.scoreFile
+
+isPG :: IO Bool
+isPG = do
+  args <- Config.getArgs
+  return $ elem "pg" (args :: [String])
 
 markerToRecord :: String -> String
 markerToRecord [] = "TIE"
@@ -59,4 +56,5 @@ tallyWinners winningMarkers =
   zip uniqueMarkers occurrences
   where
     uniqueMarkers = List.nub winningMarkers
-    occurrences = map (\marker -> length (filter (== marker) winningMarkers)) uniqueMarkers
+    occurrences = map numberOfMarkers uniqueMarkers
+    numberOfMarkers marker = length $ filter (== marker) winningMarkers

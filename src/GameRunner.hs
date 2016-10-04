@@ -28,7 +28,8 @@ playGame = do
   playerMarker <- Settings.getPlayerMarker
   aiPlayerMarker <- Settings.getAIMarker
   playerGoingFirst <- Settings.askIfPlayerGoingFirst
-  let markers = Markers { ai = aiPlayerMarker :: String, player = playerMarker :: String }
+  let markers = Markers { ai = aiPlayerMarker :: String
+                        , player = playerMarker :: String }
   let board = Board.makeBoard
   Display.displayBoard board
   if playerGoingFirst
@@ -60,10 +61,10 @@ makeAIMove gameBoard markers =
 
 endGame :: Board -> IO()
 endGame gameBoard = do
-  _ <- Score.recordWinner winningPlayer
-  reportEndGameStatus winningPlayer
+  Score.recordWinner winner
+  reportEndGameStatus winner
   where
-    winningPlayer = GameLogic.getWinningPlayer gameBoard
+    winner = GameLogic.getWinningPlayer gameBoard
 
 reportEndGameStatus :: String -> IO ()
 reportEndGameStatus winningPlayer

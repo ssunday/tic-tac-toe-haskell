@@ -16,7 +16,7 @@ insertWinner :: String -> IO Connection -> IO ()
 insertWinner winner connection = do
   conn <- connection
   _ <- run conn "INSERT INTO scores (winning_player) VALUES (?);" [(toSql winner)]
-  _ <- commit conn
+  commit conn
   disconnect conn
 
 getTallys :: [[(String, SqlValue)]] -> [String]

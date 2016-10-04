@@ -5,10 +5,11 @@ module Menu
 
 import Control.Monad
 
-import qualified Input as Input
 import qualified Display as Display
-import qualified Score as Score
 import qualified GameRunner as GameRunner
+import qualified Input as Input
+import qualified InputValidation as Validation
+import qualified Score as Score
 
 menu :: [(String, IO ())]
 menu =
@@ -30,20 +31,19 @@ menuLoop = go
           when (not ((option :: Int) == 3)) $ do runMenuOption option
                                                  go
 
-
 menuForDisplay :: [(Int, String)]
 menuForDisplay =
   zip [1 .. length menu] $ map fst menu
 
 runMenuOption :: Int -> IO ()
 runMenuOption option =
-  snd (menu !! (option - 1))
+  snd $ menu !! (option - 1)
 
 menuChoiceLoop :: String -> IO Int
 menuChoiceLoop promptString =  go
   where go = do
           responseIO <- Input.prompt promptString
           let response = read responseIO
-          if (response > 0) && (response < ((length menu) + 1))
+          if Validation.isMenuOptionValid menuForDisplay response
             then return response
             else go

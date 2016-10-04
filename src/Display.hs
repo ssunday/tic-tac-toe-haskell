@@ -3,10 +3,10 @@ module Display
     welcomeMessage
   , endMessage
   , endGameMessage
-  , displayMenu
-  , displayTallys
   , playerHasWonMessage
   , gameTiedMessage
+  , displayMenu
+  , displayTallys
   , displayBoard
   ) where
 

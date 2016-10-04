@@ -14,12 +14,8 @@ clearDB :: IO ()
 clearDB = do
   conn <- connectTest
   _ <- run conn "TRUNCATE TABLE scores;" []
-  _ <- commit conn
+  commit conn
   disconnect conn
-
-parseRow :: [(String, SqlValue)] -> String
-parseRow row =
-  fromSql . snd . head $ row :: String
 
 disconnectTest :: IO ()
 disconnectTest = do
@@ -31,21 +27,19 @@ spec =  do
   describe "insertWinner" $ after_ disconnectTest $ before_ clearDB $ do
     it "successfully adds a new winner to the table" $ do
       let winningPlayer = "R"
-      _ <- SUT.insertWinner winningPlayer connectTest
+      SUT.insertWinner winningPlayer connectTest
       conn <- connectTest
       stmt <- prepare conn "SELECT winning_player from scores LIMIT 1;"
       _ <- execute stmt []
       resultsFromDB <- fetchAllRowsAL stmt
-      let result = head $ map parseRow resultsFromDB
-      result `shouldBe` winningPlayer
+      resultsFromDB `shouldBe` [[("winning_player", toSql winningPlayer)]]
 
   describe "selectWinners" $ after_ disconnectTest $ before_ clearDB $ do
     it "returns all winning player rows in sql form" $ do
       conn <- connectTest
       _ <- run conn "INSERT INTO scores (winning_player) VALUES ('X');" []
       _ <- run conn "INSERT INTO scores (winning_player) VALUES ('R');" []
-
-      _ <- commit conn
+      commit conn
       results <- SUT.selectWinners connectTest
       results `shouldBe` [ [("winning_player", toSql "X")]
                          , [("winning_player", toSql "R")] ]
