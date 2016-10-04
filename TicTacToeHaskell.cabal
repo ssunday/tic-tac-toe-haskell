@@ -13,6 +13,8 @@ executable TicTacToeHaskell
   ghc-options:       -Wall -Werror
   build-depends:     base >=4.8 && <4.9,
                      parallel,
+                     HDBC,
+                     HDBC-postgresql,
                      split,
                      directory,
                      monad-loops,
@@ -33,6 +35,8 @@ test-suite sp
    build-depends:    base >=4.8 && <4.9,
                      parallel,
                      split,
+                     HDBC,
+                     HDBC-postgresql,
                      directory,
                      containers,
                      hspec == 2.*,

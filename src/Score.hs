@@ -1,52 +1,58 @@
 module Score
   (
-    scoreFile
-  , scoreFileTest
-  , doesScoreFileExist
-  , getWinners
+    displayScores
+  , tallyWinners
   , recordWinner
-  , getTallys
-  , clearFile
-  )
-where
+  , markerToRecord
+  ) where
 
 import qualified Data.List as List (nub)
-import qualified Data.List.Split as Split
-import qualified System.IO as IO
-import qualified System.Directory as Directory
 
-scoreFile :: String
-scoreFile = "winners.txt"
+import qualified Config as Config
+import qualified Display as Display
 
-scoreFileTest :: String
-scoreFileTest = "winners-test.txt"
+import qualified ScorePG as PG
+import qualified ScoreTXT as TXT
 
-doesScoreFileExist :: String -> IO Bool
-doesScoreFileExist file =
-  Directory.doesFileExist file
+isPG :: IO Bool
+isPG = do
+  args <- Config.getArgs
+  return $ elem "pg" (args :: [String])
 
-recordWinner :: String -> String -> IO()
-recordWinner winningPlayer file =
-  IO.appendFile file $ markerToRecord winningPlayer
+displayScores :: IO ()
+displayScores = do
+  isPostgres <- isPG
+  if isPostgres :: Bool
+    then
+    displayPGTallys
+    else
+    displayTXTTallys
+
+recordWinner :: String -> IO()
+recordWinner winner = do
+  isPostgres <- isPG
+  let marker = markerToRecord winner
+  if isPostgres :: Bool
+    then PG.insertWinner marker PG.dbConnection
+    else TXT.recordWinner marker TXT.scoreFile
 
 markerToRecord :: String -> String
-markerToRecord [] = "TIE,"
-markerToRecord marker = marker ++ ","
+markerToRecord [] = "TIE"
+markerToRecord marker = marker
 
-getTallys :: String -> [(String, Int)]
-getTallys winners =
-  let split = splitByComma winners
-  in tallyWinners split
+displayPGTallys :: IO()
+displayPGTallys = do
+  rows <- PG.selectWinners PG.dbConnection
+  let winners = PG.getTallys rows
+  let tallys = tallyWinners winners
+  Display.displayTallys tallys
 
-getWinners :: String -> IO String
-getWinners file =
-  IO.readFile file
-
-splitByComma :: String -> [String]
-splitByComma commaString =
-  filter (not . null) split
-  where
-    split = Split.splitOn "," commaString
+displayTXTTallys :: IO()
+displayTXTTallys = do
+  fileData <- TXT.getWinners TXT.scoreFile
+  let winners = TXT.getTallys fileData
+  let tallys = tallyWinners winners
+  Display.displayTallys tallys
 
 tallyWinners :: [String] -> [(String, Int)]
 tallyWinners winningMarkers =
@@ -54,7 +60,3 @@ tallyWinners winningMarkers =
   where
     uniqueMarkers = List.nub winningMarkers
     occurrences = map (\marker -> length (filter (== marker) winningMarkers)) uniqueMarkers
-
-clearFile :: String -> IO()
-clearFile file =
-  Directory.removeFile file

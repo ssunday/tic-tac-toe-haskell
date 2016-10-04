@@ -20,11 +20,11 @@ askIfPlayerGoingFirst =
 
 getPlayerMarker :: IO String
 getPlayerMarker =
-  getMarker "\nWhat do you want your marker to be? (Length of one)" "LIGHT CYAN"
+  getMarker "\nWhat do you want your marker to be? (Any single character)" "LIGHT CYAN"
 
 getAIMarker :: IO String
 getAIMarker =
-  getMarker "\nWhat do you want the computer marker to be? (Length of one)" "LIGHT RED"
+  getMarker "\nWhat do you want the computer marker to be? (Any single character)" "LIGHT RED"
 
 getMarker :: String -> String -> IO String
 getMarker prompt markerColor = go

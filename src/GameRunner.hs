@@ -18,24 +18,11 @@ runGame :: IO()
 runGame = do
   Display.welcomeMessage
   whileM_ (do
-            showScoresIfPossible
+            Score.displayScores
             Settings.askToPlayRound
           ) $ do
     playGame
   Display.endMessage
-
-showScoresIfPossible :: IO ()
-showScoresIfPossible = do
-  exists <- Score.doesScoreFileExist Score.scoreFile
-  if (exists :: Bool)
-    then displayAvailableTallys
-    else Display.noScoresMessage
-
-displayAvailableTallys :: IO ()
-displayAvailableTallys = do
-  winners <- Score.getWinners Score.scoreFile
-  let tallys = Score.getTallys winners
-  Display.displayTallys tallys
 
 playGame :: IO ()
 playGame = do
@@ -74,7 +61,7 @@ makeAIMove gameBoard markers =
 
 endGame :: Board -> IO()
 endGame gameBoard = do
-  _ <- Score.recordWinner winningPlayer Score.scoreFile
+  _ <- Score.recordWinner winningPlayer
   reportEndGameStatus winningPlayer
   where
     winningPlayer = GameLogic.getWinningPlayer gameBoard
