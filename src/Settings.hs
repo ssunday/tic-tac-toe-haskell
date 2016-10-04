@@ -12,7 +12,7 @@ import qualified Colors as Colors
 
 askToPlayRound :: IO Bool
 askToPlayRound =
-  yOrNLoop $ "\nDo you want to play a round of Tic Tac Toe? (y/n)"
+  yOrNLoop $ "\nDo you want to play another round of Tic Tac Toe? (y/n)"
 
 askIfPlayerGoingFirst :: IO Bool
 askIfPlayerGoingFirst =

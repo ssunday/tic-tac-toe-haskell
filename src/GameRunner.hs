@@ -16,13 +16,12 @@ import qualified Settings as Settings
 
 runGame :: IO()
 runGame = do
-  Display.welcomeMessage
-  whileM_ (do
-            Score.displayScores
-            Settings.askToPlayRound
-          ) $ do
+  playGame
+  whileM_ (
+    Settings.askToPlayRound
+    ) $ do
     playGame
-  Display.endMessage
+  Display.endGameMessage
 
 playGame :: IO ()
 playGame = do

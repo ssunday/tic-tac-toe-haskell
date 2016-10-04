@@ -2,7 +2,8 @@ module Display
   (
     welcomeMessage
   , endMessage
-  , noScoresMessage
+  , endGameMessage
+  , displayMenu
   , displayTallys
   , playerHasWonMessage
   , gameTiedMessage
@@ -20,7 +21,11 @@ welcomeMessage =
 
 endMessage :: IO()
 endMessage =
-  printColoredMessage "YELLOW" "\nThanks for playing and good-bye!"
+  printColoredMessage "YELLOW" "\nGood-bye!"
+
+endGameMessage :: IO()
+endGameMessage =
+  printColoredMessage "YELLOW" "\nThanks for playing!"
 
 playerHasWonMessage :: [Char] -> IO ()
 playerHasWonMessage winningPlayerMarker =
@@ -34,17 +39,22 @@ gameTiedMessage :: IO()
 gameTiedMessage = do
   printColoredMessage "LIGHT BLUE" "\nTie!"
 
+displayMenu :: [(Int, String)] -> IO ()
+displayMenu menu =
+  putStrLn $ "\n" ++ concatMap (\(a,b) -> formatMenuOption a b) menu
+
+formatMenuOption :: Int -> String -> String
+formatMenuOption number option =
+  (show number) ++ ". " ++ option ++ "\n"
+
+displayTallys :: [(String, Int)] -> IO ()
+displayTallys tallys
+  | null tallys = printColoredMessage "GREEN" "\nNo scores to show!"
+  | otherwise = printColoredMessage "GREEN" $ "\nAmount of Wins Per Marker and Total Ties:\n" ++ showTallys tallys
+
 printColoredMessage :: String -> String -> IO ()
 printColoredMessage color message =
   putStrLn $ Colors.colorString color message
-
-noScoresMessage :: IO ()
-noScoresMessage =
-  putStrLn $ "No scores to show! Play some games!"
-
-displayTallys :: [(String, Int)] -> IO ()
-displayTallys tallys =
-  printColoredMessage "GREEN" $ "\nAmount of Wins Per Marker and Total Ties:\n" ++ showTallys tallys
 
 showTallys :: [(String, Int)] -> String
 showTallys tallys =

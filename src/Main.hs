@@ -1,6 +1,6 @@
 module Main (main) where
 
-import qualified GameRunner as GameRunner
+import qualified Menu as Menu
 
 main :: IO()
-main = GameRunner.runGame
+main = Menu.runMenu
