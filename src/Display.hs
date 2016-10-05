@@ -10,8 +10,6 @@ module Display
   , displayBoard
   ) where
 
-import qualified Data.Map as Map
-
 import Colors as Colors
 import Board as Board
 
@@ -62,34 +60,33 @@ showTallys tallys =
 
 formatTally :: String -> Int -> String
 formatTally marker tally =
-  marker ++ " : " ++ (show tally) ++ "\n"
+  marker ++ ": " ++ (show tally) ++ "\n"
 
 displayBoard :: Board -> IO ()
 displayBoard gameBoard =
-  putStr $ showBoard gameBoard
+  putStrLn $ showBoard gameBoard
 
 showBoard :: Board -> String
 showBoard gameBoard =
-  border ++ concatMap (\(a,b) -> formatCell a b) board
+  "\n" ++ concatMap (\(a,b) -> formatCell a b dimension) board
   where
-    board = Map.toList gameBoard
+    board = zip boardSpots boardVals
+    dimension = Board.boardDimension gameBoard
+    boardVals = Board.getBoardValues gameBoard boardSpots
+    boardSpots = Board.allBoardSpots dimension
 
-formatCell :: String -> String -> String
-formatCell spot value
-  | (mod location 3 == 0) = "   " ++ coreCell ++ "  |" ++ border
-  | (mod location 3 == 1) = "   |   " ++ coreCell ++ "  |"
-  | otherwise = "   " ++ coreCell ++  "  |"
+formatCell :: String -> String -> Int -> String
+formatCell spot value dimension
+  | (rem location dimension == 0) = "\t" ++ coreCell ++ "\n\n"
+  | otherwise = "\t" ++ coreCell
   where location = read spot :: Int
         coreCell = formCellDisplay spot value
 
 formCellDisplay :: String -> String -> String
 formCellDisplay spot value =
   let coloredSpot = Colors.colorString "LIGHT YELLOW" spot
-  in coloredSpot ++ " : " ++ valueDisplay value
+  in coloredSpot ++ ": " ++ valueDisplay value
 
 valueDisplay :: String -> String
 valueDisplay [] = " "
 valueDisplay value = value
-
-border :: String
-border = "\n  -------------------------------------\n"

@@ -51,20 +51,37 @@ spec = do
           valid = SUT.isMarkerValid marker
       valid `shouldBe` False
 
+  describe "isBoardDimensionValid" $ do
+    it "is true when dimension is 3" $ do
+      let valid = SUT.isBoardDimensionValid 3
+      valid `shouldBe` True
+
+    it "is true when dimension is 4" $ do
+      let valid = SUT.isBoardDimensionValid 4
+      valid `shouldBe` True
+
+    it "is false when dimension is 2" $ do
+      let valid = SUT.isBoardDimensionValid 2
+      valid `shouldBe` False
+
+    it "is false when dimension is 5" $ do
+      let valid = SUT.isBoardDimensionValid 5
+      valid `shouldBe` False
+
   describe "isMenuOptionValid" $ do
     let menu =  [ (1, "Play Game")
                 , (2, "Display Scores")
                 , (3, "Quit") ]
 
-    it "is true option is less than menu length" $ do
+    it "is true when option is less than menu length" $ do
       let valid = SUT.isMenuOptionValid menu 2
       valid `shouldBe` True
 
-    it "is true option is 1" $ do
+    it "is true when option is 1" $ do
       let valid = SUT.isMenuOptionValid menu 1
       valid `shouldBe` True
 
-    it "is true option is max menu option" $ do
+    it "is true when option is max menu option" $ do
       let valid = SUT.isMenuOptionValid menu (length menu)
       valid `shouldBe` True
 

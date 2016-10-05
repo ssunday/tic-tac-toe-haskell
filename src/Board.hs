@@ -2,6 +2,7 @@ module Board
   ( Board
   , makeBoard
   , allBoardSpots
+  , boardDimension
   , markBoard
   , isSpotOpen
   , getAvailableSpots
@@ -12,13 +13,17 @@ import qualified Data.Map as Map
 
 type Board = Map.Map String String
 
-allBoardSpots :: [String]
-allBoardSpots =
-  map show [1 :: Int .. 9]
+allBoardSpots :: Int -> [String]
+allBoardSpots dimension =
+  map show [1 :: Int .. (dimension * dimension)]
 
-makeBoard :: Board
-makeBoard =
-  Map.fromList $ zip allBoardSpots (repeat "")
+boardDimension :: Board -> Int
+boardDimension board =
+  floor . (sqrt :: Double -> Double) . fromIntegral $ length board
+
+makeBoard :: Int -> Board
+makeBoard dimension =
+  Map.fromList $ zip (allBoardSpots dimension) (repeat "")
 
 markBoard :: Board -> String -> String -> Board
 markBoard gameBoard spot marker =

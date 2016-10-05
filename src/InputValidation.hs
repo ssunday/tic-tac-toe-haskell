@@ -4,6 +4,7 @@ module InputValidation
   , isValidYOrNInput
   , isMarkerValid
   , isMenuOptionValid
+  , isBoardDimensionValid
   ) where
 
 isYes :: String -> Bool
@@ -17,6 +18,10 @@ isValidYOrNInput input =
 isMarkerValid :: String -> Bool
 isMarkerValid marker =
   length marker == 1
+
+isBoardDimensionValid :: Int -> Bool
+isBoardDimensionValid dimension =
+  elem dimension [3, 4]
 
 isMenuOptionValid :: [(Int, String)] -> Int -> Bool
 isMenuOptionValid menu option =

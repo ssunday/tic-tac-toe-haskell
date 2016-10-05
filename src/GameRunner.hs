@@ -28,9 +28,10 @@ playGame = do
   playerMarker <- Settings.getPlayerMarker
   aiPlayerMarker <- Settings.getAIMarker
   playerGoingFirst <- Settings.askIfPlayerGoingFirst
+  dimension <- Settings.askForBoardDimension
   let markers = Markers { ai = aiPlayerMarker :: String
                         , player = playerMarker :: String }
-  let board = Board.makeBoard
+  let board = Board.makeBoard (dimension :: Int)
   Display.displayBoard board
   if playerGoingFirst
     then playerMove board markers

@@ -2,23 +2,26 @@
 
 Haskell Tic Tac Toe Game. Glorious. So pure it is impure.
 
-* Player vs AI
-* You can choose your marker
-* Choose who goes first
+## Features
+
+* Player vs. AI
+* You can choose your marker. AI and Player get different colors.
+* Choose who makes the first move
 * Play game over and over again
-* Menu system
+* Menu system to display scores or play the game
+* Two board types: 3x3 and 4x4
 * Display colors
 * Scoring saves to either txt file or PG database. Defaults to txt file
 
 ## Usage
 
-Have Haskell + Cabal installed before attempting this or else it won't work.
+To Play:
 
-Run `cabal install`, `cabal configure` as needed, and then:
-
-```
-cabal run
-```
+1. Install Haskell and Cabal
+2. Clone Repo `git clone https://github.com/the-real-makuta/tic-tac-toe-haskell.git`
+3. Enter directory
+4. Run `cabal install` and `cabal configure` as needed
+5. `cabal run`
 
 For Postgres scoring:
 
@@ -28,7 +31,7 @@ For Postgres scoring:
 
 ## Testing
 
-Make sure to run `cabal install --enable-test` just in case + `cabal configure`
+Make sure to run `cabal install --enable-test`, and if cabal balks, `cabal configure`
 
 Using cabal (faster):
 
@@ -36,7 +39,7 @@ Using cabal (faster):
 cabal test
 ```
 
-For pretty output (color), but slower:
+For colored test output, but slower execution:
 
 ```
 runhaskell -isrc -itest test/Spec.hs

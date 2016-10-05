@@ -12,7 +12,7 @@ import Markers
 
 getMove :: Board -> Markers String String -> String
 getMove gameBoard markers  =
-  head . getMax $ assignScores gameBoard markers
+  head . maxScore $ assignScores gameBoard markers
 
 assignScores :: Board -> Markers String String -> Map.Map String Int
 assignScores gameBoard markers =
@@ -34,7 +34,7 @@ parallelMinimax gameBoard markers currentPlayer depth =
 
 minimax :: Board -> Markers String String -> String -> Int -> Int
 minimax gameBoard markers currentPlayer depth
-  | GameLogic.isOver gameBoard = getScore gameBoard markers depth
+  | isConditionToScoreBoard gameBoard depth = getScore gameBoard markers depth
   | otherwise =
       getMaxOrMin scores markers currentPlayer
       where scores = parallelMinimax gameBoard markers currentPlayer depth
@@ -62,8 +62,17 @@ getNextBoardStates gameBoard currentPlayer =
   where markSpot spot = Board.markBoard gameBoard spot currentPlayer
         availableSpots = Board.getAvailableSpots gameBoard
 
-getMax :: Map.Map String Int -> [String]
-getMax scoredBoard = go [] Nothing (Map.toList scoredBoard)
+isConditionToScoreBoard :: Board -> Int -> Bool
+isConditionToScoreBoard board depth =
+  GameLogic.isOver board || depth > (maxDepth board)
+
+maxDepth :: Board -> Int
+maxDepth board
+ | Board.boardDimension board > 3 = 4
+ | otherwise = 10
+
+maxScore :: Map.Map String Int -> [String]
+maxScore scoredBoard = go [] Nothing (Map.toList scoredBoard)
   where
     go ks _        []           = ks
     go ks Nothing  ((k,v):rest) = go (k:ks) (Just v) rest

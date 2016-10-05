@@ -2,6 +2,7 @@ module Settings
   (
     askToPlayRound
   , askIfPlayerGoingFirst
+  , askForBoardDimension
   , getPlayerMarker
   , getAIMarker
   ) where
@@ -17,6 +18,16 @@ askToPlayRound =
 askIfPlayerGoingFirst :: IO Bool
 askIfPlayerGoingFirst =
   yOrNLoop $ "\nDo you want to go first? (yes/no)"
+
+askForBoardDimension :: IO Int
+askForBoardDimension = go
+  where go = do
+          dimensionIO <- Input.prompt "\n3x3 board or 4x4 board? 3 for 3x3, 4 for 4x4."
+          let dimension = (read dimensionIO)
+          if Validation.isBoardDimensionValid dimension
+            then return dimension
+            else go
+
 
 getPlayerMarker :: IO String
 getPlayerMarker =

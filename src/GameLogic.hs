@@ -13,7 +13,8 @@ isOver gameBoard =
 
 isTied :: Board -> Bool
 isTied gameBoard =
-  let boardVals = Board.getBoardValues gameBoard Board.allBoardSpots
+  let boardVals = Board.getBoardValues gameBoard boardSpots
+      boardSpots = Board.allBoardSpots $ boardDimension gameBoard
   in allNotNull boardVals && (not . isWon $ gameBoard)
 
 getWinningPlayer :: Board -> String
@@ -29,21 +30,44 @@ isWon gameBoard =
 getWinningRows :: Board -> [[String]]
 getWinningRows gameBoard =
   filter rowHasBeenWon boardRowVals
-  where boardRowVals = map (Board.getBoardValues gameBoard) winningCombinations
+  where
+    boardRowVals = map (Board.getBoardValues gameBoard) winningSpots
+    winningSpots = winningCombinations $ Board.boardDimension gameBoard
 
 rowHasBeenWon :: [String] -> Bool
 rowHasBeenWon rowVals =
   allEqual rowVals && allNotNull rowVals
 
-winningCombinations :: [[String]]
-winningCombinations = [ ["1", "2", "3"]
-                      , ["4", "5", "6"]
-                      , ["7", "8", "9"]
-                      , ["1", "4", "7"]
-                      , ["2", "5", "8"]
-                      , ["3", "6", "9"]
-                      , ["1", "5", "9"]
-                      , ["3", "5", "7"] ]
+winningCombinations :: Int -> [[String]]
+winningCombinations dimension
+  | dimension == 3 = winningCombinations3x3
+  | otherwise = winningCombinations4x4
+
+winningCombinations3x3 :: [[String]]
+winningCombinations3x3 = [ ["1", "2", "3"]
+                         , ["4", "5", "6"]
+                         , ["7", "8", "9"]
+
+                         , ["1", "4", "7"]
+                         , ["2", "5", "8"]
+                         , ["3", "6", "9"]
+
+                         , ["1", "5", "9"]
+                         , ["3", "5", "7"] ]
+
+winningCombinations4x4 :: [[String]]
+winningCombinations4x4 = [ ["1", "2", "3", "4"]
+                         , ["5", "6", "7", "8"]
+                         , ["9", "10", "11", "12"]
+                         , ["13", "14", "15", "16"]
+
+                         , ["1", "5", "9", "13"]
+                         , ["2", "6", "10", "14"]
+                         , ["3", "7", "11", "15"]
+                         , ["4", "8", "12", "16"]
+
+                         , ["1", "6", "11", "16"]
+                         , ["4", "7", "10", "13"]]
 
 allEqual :: Eq a => [a] -> Bool
 allEqual [] = True
