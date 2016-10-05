@@ -15,7 +15,6 @@ executable TicTacToeHaskell
                      parallel,
                      HDBC,
                      HDBC-postgresql,
-                     split,
                      directory,
                      monad-loops,
                      containers
@@ -34,7 +33,6 @@ test-suite sp
    type:             exitcode-stdio-1.0
    build-depends:    base >=4.8 && <4.9,
                      parallel,
-                     split,
                      HDBC,
                      HDBC-postgresql,
                      directory,

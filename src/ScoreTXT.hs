@@ -7,7 +7,6 @@ module ScoreTXT
   ) where
 
 
-import qualified Data.List.Split as Split
 import qualified System.IO as IO
 import qualified System.Directory as Directory
 
@@ -16,13 +15,11 @@ scoreFile = "winners.txt"
 
 recordWinner :: String -> String -> IO()
 recordWinner winningPlayer file =
-  IO.appendFile file (winningPlayer ++ ",")
+  IO.appendFile file (winningPlayer ++ " ")
 
 getTallys :: String -> [String]
-getTallys commaString =
-  filter (not . null) splitTallys
-  where
-    splitTallys = Split.splitOn "," commaString
+getTallys winners =
+  filter (not . null) $ words winners
 
 getWinners :: String -> IO String
 getWinners file = do
