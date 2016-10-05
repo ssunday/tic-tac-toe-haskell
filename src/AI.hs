@@ -6,7 +6,7 @@ module AI
 import Control.Parallel.Strategies (parMap, rdeepseq)
 import qualified Data.Map as Map
 
-import qualified GameLogic as GameLogic (getWinningPlayer, isOver)
+import qualified GameLogic as GameLogic
 import Board as Board
 import Markers
 
@@ -35,26 +35,25 @@ parallelMinimax gameBoard markers currentPlayer depth =
 minimax :: Board -> Markers String String -> String -> Int -> Int
 minimax gameBoard markers currentPlayer depth
   | isConditionToScoreBoard gameBoard depth = getScore gameBoard markers depth
-  | otherwise =
-      getMaxOrMin scores markers currentPlayer
-      where scores = parallelMinimax gameBoard markers currentPlayer depth
+  | otherwise                               = getMaxOrMin scores markers currentPlayer
+  where scores = parallelMinimax gameBoard markers currentPlayer depth
 
 getScore :: Board -> Markers String String -> Int -> Int
 getScore gameBoard markers depth
-  | winningPlayer == (ai markers) = 100 - depth
+  | winningPlayer == (ai markers)     = 100 - depth
   | winningPlayer == (player markers) = depth - 100
-  | otherwise = 0
+  | otherwise                         = 0
   where winningPlayer = GameLogic.getWinningPlayer gameBoard
 
 getMaxOrMin :: [Int] ->  Markers String String -> String -> Int
 getMaxOrMin scores markers currentPlayerMarker
   | currentPlayerMarker == (ai markers) = maximum scores
-  | otherwise = minimum scores
+  | otherwise                           = minimum scores
 
 getOtherPlayer :: Markers String String -> String -> String
 getOtherPlayer markers currentPlayer
   | currentPlayer == (ai markers) = (player markers)
-  | otherwise = (ai markers)
+  | otherwise                     = (ai markers)
 
 getNextBoardStates :: Board -> String -> [Board]
 getNextBoardStates gameBoard currentPlayer =
@@ -69,7 +68,7 @@ isConditionToScoreBoard board depth =
 maxDepth :: Board -> Int
 maxDepth board
  | Board.boardDimension board > 3 = 4
- | otherwise = 10
+ | otherwise                      = 10
 
 maxScore :: Map.Map String Int -> [String]
 maxScore scoredBoard = go [] Nothing (Map.toList scoredBoard)

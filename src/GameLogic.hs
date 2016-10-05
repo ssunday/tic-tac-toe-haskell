@@ -20,7 +20,7 @@ isTied gameBoard =
 getWinningPlayer :: Board -> String
 getWinningPlayer gameBoard
   | null winningRows = ""
-  | otherwise = head . head $ winningRows
+  | otherwise        = head . head $ winningRows
   where winningRows = getWinningRows gameBoard
 
 isWon :: Board -> Bool
@@ -41,7 +41,7 @@ rowHasBeenWon rowVals =
 winningCombinations :: Int -> [[String]]
 winningCombinations dimension
   | dimension == 3 = winningCombinations3x3
-  | otherwise = winningCombinations4x4
+  | otherwise      = winningCombinations4x4
 
 winningCombinations3x3 :: [[String]]
 winningCombinations3x3 = [ ["1", "2", "3"]

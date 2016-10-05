@@ -48,7 +48,7 @@ formatMenuOption number option =
 displayTallys :: [(String, Int)] -> IO ()
 displayTallys tallys
   | null tallys = printColoredMessage "GREEN" "\nNo scores to show!"
-  | otherwise = printColoredMessage "GREEN" $ "\nAmount of Wins Per Marker and Total Ties:\n" ++ showTallys tallys
+  | otherwise   = printColoredMessage "GREEN" $ "\nAmount of Wins Per Marker and Total Ties:\n" ++ showTallys tallys
 
 printColoredMessage :: String -> String -> IO ()
 printColoredMessage color message =
@@ -78,7 +78,7 @@ showBoard gameBoard =
 formatCell :: String -> String -> Int -> String
 formatCell spot value dimension
   | (rem location dimension == 0) = "\t" ++ coreCell ++ "\n\n"
-  | otherwise = "\t" ++ coreCell
+  | otherwise                     = "\t" ++ coreCell
   where location = read spot :: Int
         coreCell = formCellDisplay spot value
 
@@ -88,5 +88,5 @@ formCellDisplay spot value =
   in coloredSpot ++ ": " ++ valueDisplay value
 
 valueDisplay :: String -> String
-valueDisplay [] = " "
+valueDisplay []    = " "
 valueDisplay value = value

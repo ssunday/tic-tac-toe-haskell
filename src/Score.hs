@@ -34,7 +34,7 @@ isPG = do
   return $ elem "pg" (args :: [String])
 
 markerToRecord :: String -> String
-markerToRecord [] = "TIE"
+markerToRecord []     = "TIE"
 markerToRecord marker = marker
 
 displayPGTallys :: IO()

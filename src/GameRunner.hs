@@ -49,16 +49,12 @@ playerMove gameBoard markers = do
 
 aiMove :: Board -> Markers String String -> IO ()
 aiMove gameBoard markers = do
-  let newBoard = makeAIMove gameBoard markers
+  let spot = AI.getMove gameBoard markers
+  let newBoard = Board.markBoard gameBoard spot (ai markers)
   Display.displayBoard newBoard
   if GameLogic.isOver newBoard
   then endGame newBoard
   else playerMove newBoard markers
-
-makeAIMove :: Board -> Markers String String -> Board
-makeAIMove gameBoard markers =
-  let spot = AI.getMove gameBoard markers
-  in Board.markBoard gameBoard spot (ai markers)
 
 endGame :: Board -> IO()
 endGame gameBoard = do
@@ -70,4 +66,4 @@ endGame gameBoard = do
 reportEndGameStatus :: String -> IO ()
 reportEndGameStatus winningPlayer
   | null winningPlayer = Display.gameTiedMessage
-  | otherwise = Display.playerHasWonMessage winningPlayer
+  | otherwise          = Display.playerHasWonMessage winningPlayer

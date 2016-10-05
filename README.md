@@ -1,6 +1,6 @@
 # Tic Tac Toe
 
-Haskell Tic Tac Toe Game. Glorious. So pure it is impure.
+Haskell Tic Tac Toe Game. Glorious. So impure it is pure.
 
 ## Features
 

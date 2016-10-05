@@ -20,12 +20,12 @@ colors = [ ("WHITE", "\x1b[0m")
          , ("LIGHT PURPLE", "\x1b[95m")
          , ("LIGHT CYAN", "\x1b[96m") ]
 
-getColor :: String -> String
-getColor color =
-  Maybe.fromMaybe "\x1b[0m" $ lookup color colors
-
 colorString :: String -> String -> String
 colorString color s =
   let startColor = getColor color
       endColor = getColor "WHITE"
   in startColor ++ s ++ endColor
+
+getColor :: String -> String
+getColor color =
+  Maybe.fromMaybe "\x1b[0m" $ lookup color colors
