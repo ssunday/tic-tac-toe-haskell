@@ -10,7 +10,8 @@ module Display
   , displayBoard
   ) where
 
-import Colors as Colors
+import qualified Text.Printf as Print
+import qualified Colors as Colors
 import Board as Board
 
 welcomeMessage :: IO()
@@ -46,21 +47,33 @@ formatMenuOption number option =
   (show number) ++ ". " ++ option ++ "\n"
 
 displayTallys :: [(String, Int)] -> IO ()
-displayTallys tallys
-  | null tallys = printColoredMessage "GREEN" "\nNo scores to show!"
-  | otherwise   = printColoredMessage "GREEN" $ "\nAmount of Wins Per Marker and Total Ties:\n" ++ showTallys tallys
+displayTallys []     = printColoredMessage "GREEN" "\nNo scores to show!"
+displayTallys tallys = printColoredMessage "GREEN" $ "\nScore Breakdown\n" ++ showTotalGames tallys ++ showTallys tallys
 
 printColoredMessage :: String -> String -> IO ()
 printColoredMessage color message =
   putStrLn $ Colors.colorString color message
 
+showTotalGames :: [(String, Int)] -> String
+showTotalGames tallys =
+  Colors.colorString "WHITE" "\nTotal Games: " ++ (show $ totalGames tallys) ++ "\n"
+
 showTallys :: [(String, Int)] -> String
 showTallys tallys =
-  concatMap (\(a,b) -> formatTally a b) tallys
+  "\nResult  #\t% of Games\n" ++ concatMap (\(a,b) -> formatTally a b totalRounds) tallys
+  where
+    totalRounds = totalGames tallys
 
-formatTally :: String -> Int -> String
-formatTally marker tally =
-  marker ++ ": " ++ (show tally) ++ "\n"
+formatTally :: String -> Int -> Int -> String
+formatTally marker tally totalRounds =
+  marker ++ ":\t" ++ (show tally) ++ "\t" ++ displayedPercentage ++ "%\n"
+  where
+    displayedPercentage = Print.printf "%.2f" percentage :: String
+    percentage = ((fromIntegral tally) / (fromIntegral totalRounds) * 100.00) :: Double
+
+totalGames :: [(String, Int)] -> Int
+totalGames tallys =
+  sum $ snd <$> tallys
 
 displayBoard :: Board -> IO ()
 displayBoard gameBoard =
