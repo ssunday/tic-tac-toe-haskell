@@ -9,11 +9,11 @@ module InputValidation
 
 isYes :: String -> Bool
 isYes input =
-  elem input ["y", "yes"]
+  elem input ["y", "yes", "aye"]
 
 isValidYOrNInput :: String -> Bool
 isValidYOrNInput input =
-  elem input ["y", "n", "yes" , "no"]
+  elem input ["y", "n", "yes" , "no", "aye", "bashl"]
 
 isMarkerValid :: String -> Bool
 isMarkerValid marker =

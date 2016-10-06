@@ -10,7 +10,7 @@ import Board as Board
 getPlayerMove :: Board -> IO String
 getPlayerMove gameBoard = go gameBoard
   where go board = do
-          let inputPrompt = Colors.colorString "LIGHT PURPLE" "\nPlease enter an open spot (1-9): "
+          let inputPrompt = Colors.colorString "LIGHT PURPLE" "\nPlease enter an open spot: "
           spot <- Input.prompt inputPrompt
           let moveLoc = spot :: String
           if Board.isSpotOpen board moveLoc

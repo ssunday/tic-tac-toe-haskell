@@ -33,7 +33,7 @@ menuLoop = go
 
 menuForDisplay :: [(Int, String)]
 menuForDisplay =
-  zip [1 .. length menu] $ map fst menu
+  zip [1 .. length menu] $ fst <$> menu
 
 runMenuOption :: Int -> IO ()
 runMenuOption option =

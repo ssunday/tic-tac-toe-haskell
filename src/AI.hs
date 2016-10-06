@@ -40,24 +40,24 @@ minimax gameBoard markers currentPlayer depth
 
 getScore :: Board -> Markers String String -> Int -> Int
 getScore gameBoard markers depth
-  | winningPlayer == (ai markers)     = 100 - depth
-  | winningPlayer == (player markers) = depth - 100
-  | otherwise                         = 0
+  | winningPlayer == ai markers     = 100 - depth
+  | winningPlayer == player markers = depth - 100
+  | otherwise                       = 0
   where winningPlayer = GameLogic.getWinningPlayer gameBoard
 
 getMaxOrMin :: [Int] ->  Markers String String -> String -> Int
 getMaxOrMin scores markers currentPlayerMarker
-  | currentPlayerMarker == (ai markers) = maximum scores
-  | otherwise                           = minimum scores
+  | currentPlayerMarker == ai markers = maximum scores
+  | otherwise                         = minimum scores
 
 getOtherPlayer :: Markers String String -> String -> String
 getOtherPlayer markers currentPlayer
-  | currentPlayer == (ai markers) = (player markers)
-  | otherwise                     = (ai markers)
+  | currentPlayer == ai markers = player markers
+  | otherwise                   = ai markers
 
 getNextBoardStates :: Board -> String -> [Board]
 getNextBoardStates gameBoard currentPlayer =
-  map markSpot availableSpots
+  markSpot <$> availableSpots
   where markSpot spot = Board.markBoard gameBoard spot currentPlayer
         availableSpots = Board.getAvailableSpots gameBoard
 
@@ -71,7 +71,8 @@ maxDepth board
  | otherwise                      = 10
 
 maxScore :: Map.Map String Int -> [String]
-maxScore scoredBoard = go [] Nothing (Map.toList scoredBoard)
+maxScore scoredBoard =
+  go [] Nothing (Map.toList scoredBoard)
   where
     go ks _        []           = ks
     go ks Nothing  ((k,v):rest) = go (k:ks) (Just v) rest

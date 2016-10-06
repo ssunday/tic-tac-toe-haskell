@@ -64,6 +64,5 @@ endGame gameBoard = do
     winner = GameLogic.getWinningPlayer gameBoard
 
 reportEndGameStatus :: String -> IO ()
-reportEndGameStatus winningPlayer
-  | null winningPlayer = Display.gameTiedMessage
-  | otherwise          = Display.playerHasWonMessage winningPlayer
+reportEndGameStatus []            = Display.gameTiedMessage
+reportEndGameStatus winningPlayer = Display.playerHasWonMessage winningPlayer

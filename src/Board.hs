@@ -15,7 +15,7 @@ type Board = Map.Map String String
 
 allBoardSpots :: Int -> [String]
 allBoardSpots dimension =
-  map show [1 :: Int .. (dimension * dimension)]
+  show <$> [1 :: Int .. (dimension * dimension)]
 
 boardDimension :: Board -> Int
 boardDimension board =
@@ -36,7 +36,7 @@ isSpotOpen gameBoard spot =
 
 getBoardValues :: Board -> [String] -> [String]
 getBoardValues gameBoard boardSpots =
-  map (Board.getSpotValue gameBoard) boardSpots
+  Board.getSpotValue gameBoard <$> boardSpots
 
 getAvailableSpots :: Board -> [String]
 getAvailableSpots gameBoard =

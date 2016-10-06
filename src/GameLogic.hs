@@ -9,7 +9,7 @@ import Board as Board
 
 isOver :: Board -> Bool
 isOver gameBoard =
-  isTied gameBoard || isWon gameBoard
+  any ($gameBoard) [isTied, isWon]
 
 isTied :: Board -> Bool
 isTied gameBoard =
@@ -36,7 +36,7 @@ getWinningRows gameBoard =
 
 rowHasBeenWon :: [String] -> Bool
 rowHasBeenWon rowVals =
-  allEqual rowVals && allNotNull rowVals
+  all ($rowVals) [allEqual, allNotNull]
 
 winningCombinations :: Int -> [[String]]
 winningCombinations dimension

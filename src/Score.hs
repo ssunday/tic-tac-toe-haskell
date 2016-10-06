@@ -56,5 +56,5 @@ tallyWinners winningMarkers =
   zip uniqueMarkers occurrences
   where
     uniqueMarkers = List.nub winningMarkers
-    occurrences = map numberOfMarkers uniqueMarkers
+    occurrences = numberOfMarkers <$> uniqueMarkers
     numberOfMarkers marker = length $ filter (== marker) winningMarkers
